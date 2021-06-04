@@ -11,42 +11,6 @@ import (
 	"github.com/vitorhrmiranda/qrcode/qrcoder"
 )
 
-// Mimetypes enableds
-const (
-	MIME_SVG string = "image/svg+xml"
-	MIME_PNG string = "image/png"
-	MIME_PDF string = "application/pdf"
-)
-
-// Allowed extensions
-const (
-	SVG string = "svg"
-	PNG string = "png"
-	PDF string = "pdf"
-)
-
-// CreateQRCode is a factory to gerenate QRCode
-func CreateQRCode(content string, extension string, size int) (qrcode []byte, mimetype string, err error) {
-	var qrEncoder qrcoder.QRCoder
-
-	switch extension {
-	case SVG:
-		qrEncoder = qrcoder.NewCoderSVG(content)
-		qrcode, err = qrEncoder.Encode()
-		mimetype = MIME_SVG
-
-	case PNG:
-		qrEncoder = qrcoder.NewCoderPNG(content, size)
-		qrcode, err = qrEncoder.Encode()
-		mimetype = MIME_PNG
-
-	default:
-		err = fmt.Errorf("extension not recognized")
-	}
-
-	return qrcode, mimetype, err
-}
-
 func Handler(request events.APIGatewayProxyRequest) (response events.APIGatewayProxyResponse, err error) {
 	var size int
 
@@ -66,7 +30,7 @@ func Handler(request events.APIGatewayProxyRequest) (response events.APIGatewayP
 		size = 500
 	}
 
-	qrcode, mimetype, err := CreateQRCode(body, ext, size)
+	qrcode, mimetype, err := qrcoder.CreateQRCode(body, ext, size)
 	if err != nil {
 		return response, fmt.Errorf("create qrcode: %w", err)
 	}
