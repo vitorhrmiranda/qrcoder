@@ -1,6 +1,7 @@
 package main
 
 import (
+	"encoding/base64"
 	"fmt"
 	"net/http"
 	"time"
@@ -28,7 +29,7 @@ const (
 func CreateQRCode(content string, extension string, size int) (qrcode []byte, mimetype string, err error) {
 	var qrEncoder qrcoder.QRCoder
 
-	switch mimetype {
+	switch extension {
 	case SVG:
 		qrEncoder = qrcoder.NewCoderSVG(content)
 		qrcode, err = qrEncoder.Encode()
@@ -38,24 +39,34 @@ func CreateQRCode(content string, extension string, size int) (qrcode []byte, mi
 		qrEncoder = qrcoder.NewCoderPNG(content, size)
 		qrcode, err = qrEncoder.Encode()
 		mimetype = MIME_PNG
+
+	default:
+		err = fmt.Errorf("extension not recognized")
 	}
 
 	return qrcode, mimetype, err
 }
 
 func Handler(request events.APIGatewayProxyRequest) (response events.APIGatewayProxyResponse, err error) {
-	var statusCode int = 200
+	var size int
+
 	var body string = request.QueryStringParameters["body"]
+	var ext string = request.QueryStringParameters["ext"]
+
 	var cacheFrom = time.Now().Format(http.TimeFormat)
 	var cacheUntil = time.Now().AddDate(1, 0, 0).Format(http.TimeFormat)
 
-	response = events.APIGatewayProxyResponse{}
+	response = events.APIGatewayProxyResponse{StatusCode: http.StatusInternalServerError}
 
 	if len(body) == 0 {
 		return response, fmt.Errorf("the 'body' query string parameter is required")
 	}
 
-	qrcode, mimetype, err := CreateQRCode(body, PNG, 500)
+	if _, err := fmt.Scanf("%d", &size); err != nil {
+		size = 500
+	}
+
+	qrcode, mimetype, err := CreateQRCode(body, ext, size)
 	if err != nil {
 		return response, fmt.Errorf("create qrcode: %w", err)
 	}
@@ -66,8 +77,8 @@ func Handler(request events.APIGatewayProxyRequest) (response events.APIGatewayP
 			"Last-Modified": cacheFrom,
 			"Expires":       cacheUntil,
 		},
-		Body:            string(qrcode),
-		StatusCode:      statusCode,
+		Body:            base64.StdEncoding.EncodeToString(qrcode),
+		StatusCode:      http.StatusOK,
 		IsBase64Encoded: true,
 	}, nil
 }
