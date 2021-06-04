@@ -10,8 +10,8 @@ import (
 	"github.com/boombuler/barcode/qr"
 )
 
-// blocksize is a default size of pixels in QRCODE
-const blocksize uint16 = 5
+// BLOCK_SIZE is a default size of pixels in QRCODE
+const BLOCK_SIZE uint16 = 5
 
 type CoderSVG struct {
 	content   string
@@ -19,7 +19,7 @@ type CoderSVG struct {
 }
 
 func NewCoderSVG(content string) *CoderSVG {
-	return &CoderSVG{content: content, Blocksize: blocksize}
+	return &CoderSVG{content: content, Blocksize: BLOCK_SIZE}
 }
 
 func (cs CoderSVG) Encode() (raw []byte, err error) {

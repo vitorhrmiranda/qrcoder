@@ -470,6 +470,7 @@ func TestCoderSVG_Encode(t *testing.T) {
 			wantErr: false,
 		},
 	}
+
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
 			cs := NewCoderSVG(tt.content)
@@ -480,7 +481,7 @@ func TestCoderSVG_Encode(t *testing.T) {
 			}
 
 			if !reflect.DeepEqual(gotRaw, tt.wantRaw) {
-				ioutil.WriteFile("./coder.svg", gotRaw, 0644)
+				ioutil.WriteFile("./error.svg", gotRaw, 0644)
 				t.Errorf("CoderSVG.Encode()")
 			}
 		})
