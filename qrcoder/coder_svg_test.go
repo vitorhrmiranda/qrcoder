@@ -1,4 +1,4 @@
-package qrcode
+package qrcoder
 
 import (
 	"io/ioutil"
