@@ -11,9 +11,9 @@ plugins:
   - serverless-api-cloudfront
 
 custom:
-  domain: qrcoder.vitorhrmiranda.com.br
+  domain: vitorhrmiranda.com.br
   bucket: qrcoder-vitorhrmiranda-com-br
-  certificate: arn:aws:acm:us-east-1:838466458684:certificate/0d0a3e27-0e8a-467b-b6e3-ad8abded2f5a
+  certificate: arn:aws:acm:us-east-1:838466458684:certificate/4e9b246b-d042-4001-8349-2252f4e2b94c
   apigwBinary:
     types:
       - "image/png"
