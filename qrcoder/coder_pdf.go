@@ -5,6 +5,7 @@ import (
 	"fmt"
 	"io/ioutil"
 	"os"
+	"time"
 
 	"github.com/jung-kurt/gofpdf"
 )
@@ -19,7 +20,7 @@ func NewCoderPDF(content string, size int) *CoderPDF {
 }
 
 func (cs CoderPDF) Encode() (raw []byte, err error) {
-	var tempPNG string = "./_temp.png"
+	var tempPNG string = fmt.Sprintf("./_temp-%d.png", time.Now().Unix())
 
 	if raw, err = cs.CoderPNG.Encode(); err != nil {
 		return raw, fmt.Errorf("PDF Encode: %w", err)
