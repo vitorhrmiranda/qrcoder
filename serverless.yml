@@ -2,63 +2,29 @@
 
 service: "qrcoder"
 
-stage: dev
+stage: local
 region: us-east-1
-
-plugins:
-  - serverless-apigw-binary
-  - serverless-apigwy-binary
-  - serverless-api-cloudfront
-
-custom:
-  domain: vitorhrmiranda.com.br
-  bucket: qrcoder-vitorhrmiranda-com-br
-  certificate: arn:aws:acm:us-east-1:838466458684:certificate/4e9b246b-d042-4001-8349-2252f4e2b94c
-  apigwBinary:
-    types:
-      - "image/png"
-      - "*/*"
-  apiCloudFront:
-    domain: ${self:custom.domain}
-    certificate: ${self:custom.certificate}
-    logging:
-      bucket: ${self:custom.bucket}.s3.amazonaws.com
-      prefix: ${self:provider.stage}
-    cookies: none
-    querystring:
-      - size
-      - body
-      - ext
 
 provider:
   name: aws
   runtime: go1.x
-  stage: ${opt:stage, 'dev'}
-  memorySize: 128
+  stage: ${opt:stage, 'local'}
+  memorySize: 256
   timeout: 10
 
-package:
-  exclude:
-    - ./**
-  include:
-    - ./bin/**
+plugins:
+  - serverless-localstack
+
+custom:
+  localstack:
+    stages:
+      - ${opt:stage, 'local'}
+    autostart: false
+    debug: true
+    docker:
+      sudo: false
+    host: http://172.16.0.11
 
 functions:
   qrcoder:
     handler: bin/qr
-    events:
-      - http:
-          path: create
-          method: get
-          contentHandling: CONVERT_TO_BINARY
-
-resources:
-  Resources:
-    NewResource:
-      Type: AWS::S3::Bucket
-      Properties:
-        BucketName: ${self:custom.bucket}
-  Outputs:
-    ApiDistribution:
-      Description: "ApiDistribution"
-      Value: ApiDistribution

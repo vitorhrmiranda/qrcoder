@@ -20,6 +20,6 @@
       "x-forwarded-proto": "http",
       "x-imforwards": "20"
   },
-  "body": "{\"content\": \"enjoei\", \"size\": 500, \"extension\": \"png\"}",
+  "body": "{\"content\": \"enjoei\", \"size\": 500, \"extension\": \"png\", \"base64_encode\": true}",
   "isBase64Encoded": false
 }
