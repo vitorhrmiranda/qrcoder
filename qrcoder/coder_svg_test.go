@@ -2,7 +2,6 @@ package qrcoder
 
 import (
 	"fmt"
-	"io/ioutil"
 	"reflect"
 	"testing"
 )
@@ -483,7 +482,6 @@ func TestCoderSVG_Encode(t *testing.T) {
 
 			if !reflect.DeepEqual(gotRaw, tt.wantRaw) {
 				fmt.Printf("%s", gotRaw)
-				ioutil.WriteFile("./error.svg", gotRaw, 0644)
 				t.Errorf("CoderSVG.Encode()")
 			}
 		})

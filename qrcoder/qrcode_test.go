@@ -1,6 +1,7 @@
 package qrcoder
 
 import (
+	"io/ioutil"
 	"testing"
 
 	"github.com/bxcodec/faker/v3"
@@ -57,11 +58,13 @@ func TestCreateQRCode(t *testing.T) {
 
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
-			_, gotMimetype, err := CreateQRCode(faker.Word(), tt.args.extension, tt.args.size)
+			raw, gotMimetype, err := CreateQRCode(faker.Word(), tt.args.extension, tt.args.size)
 			if (err != nil) != tt.wantErr {
 				t.Errorf("CreateQRCode() error = %v, wantErr %v", err, tt.wantErr)
 				return
 			}
+
+			ioutil.WriteFile("test."+tt.args.extension, raw, 0644)
 			if gotMimetype != tt.wantMimetype {
 				t.Errorf("CreateQRCode() gotMimetype = %v, want %v", gotMimetype, tt.wantMimetype)
 			}

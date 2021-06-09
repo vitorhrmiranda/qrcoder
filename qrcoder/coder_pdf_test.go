@@ -1,7 +1,6 @@
 package qrcoder
 
 import (
-	"io/ioutil"
 	"testing"
 )
 
@@ -25,9 +24,8 @@ func TestCoderPDF_Encode(t *testing.T) {
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
 			cs := NewCoderPDF(tt.fields.content, tt.fields.size)
-			gotRaw, err := cs.Encode()
+			_, err := cs.Encode()
 			if (err != nil) != tt.wantErr {
-				ioutil.WriteFile("./error.pdf", gotRaw, 0644)
 				t.Errorf("CoderPDF.Encode() error = %v, wantErr %v", err, tt.wantErr)
 			}
 		})

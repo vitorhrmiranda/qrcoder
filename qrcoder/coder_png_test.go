@@ -1,7 +1,6 @@
 package qrcoder
 
 import (
-	"io/ioutil"
 	"reflect"
 	"testing"
 
@@ -107,7 +106,6 @@ func TestCoderPNG_Encode(t *testing.T) {
 				return
 			}
 			if !reflect.DeepEqual(gotRaw, tt.wantRaw) {
-				ioutil.WriteFile("./error.png", gotRaw, 0644)
 				t.Errorf("CoderPNG.Encode()")
 			}
 		})
