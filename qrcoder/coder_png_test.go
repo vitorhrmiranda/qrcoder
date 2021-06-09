@@ -35,7 +35,7 @@ func TestNewCoderPNG(t *testing.T) {
 			name: "when the size is larger than allowed",
 			args: args{
 				content: faker.WORD,
-				size:    2000,
+				size:    2049,
 			},
 			want: &CoderPNG{
 				content: faker.WORD,

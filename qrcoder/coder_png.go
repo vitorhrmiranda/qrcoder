@@ -8,8 +8,8 @@ import (
 
 // Dimension limits
 const (
-	MAX_SIZE int = 1000
-	MIN_SIZE int = 150
+	MAX_SIZE int = 1 << 11
+	MIN_SIZE int = 1 << 7
 )
 
 type CoderPNG struct {
