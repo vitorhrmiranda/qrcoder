@@ -34,7 +34,7 @@ func (cs CoderSVG) Encode() (raw []byte, err error) {
 	s := svg.New(&buf)
 
 	// Write QR code to SVG
-	qs := goqrsvg.NewQrSVG(qrCode, 5)
+	qs := goqrsvg.NewQrSVG(qrCode, int(cs.Blocksize))
 	qs.StartQrSVG(s)
 
 	if err = qs.WriteQrSVG(s); err != nil {
