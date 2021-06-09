@@ -14,6 +14,7 @@ type CoderPDF struct {
 
 func NewCoderPDF(content string, size int) *CoderPDF {
 	cp := NewCoderPNG(content, size)
+	cp.UseLogo = true
 	return &CoderPDF{CoderPNG: *cp}
 }
 

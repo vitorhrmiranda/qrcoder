@@ -12,4 +12,8 @@ require (
 	github.com/pkg/errors v0.9.1 // indirect
 	github.com/signintech/gopdf v0.9.17
 	github.com/skip2/go-qrcode v0.0.0-20200617195104-da1b6568686e
+	github.com/srwiley/oksvg v0.0.0-20210519022825-9fc0c575d5fe
+	github.com/srwiley/rasterx v0.0.0-20210519020934-456a8d69b780
+	golang.org/x/image v0.0.0-20210607152325-775e3b0c77b9 // indirect
+	golang.org/x/net v0.0.0-20210525063256-abc453219eb5 // indirect
 )

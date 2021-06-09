@@ -23,22 +23,28 @@ const (
 
 // CreateQRCode is a factory to gerenate QRCode
 func CreateQRCode(content string, extension string, size int) (qrcode []byte, mimetype string, err error) {
+	var coder QRCoder
+
 	switch extension {
 	case SVG:
-		qrcode, err = NewCoderSVG(content).Encode()
+		coder = NewCoderSVG(content)
 		mimetype = MIME_SVG
 
 	case PNG:
-		qrcode, err = NewCoderPNG(content, size).Encode()
+		coder = NewCoderPNG(content, size)
 		mimetype = MIME_PNG
 
+		coder.(*CoderPNG).UseLogo = true
+
 	case PDF:
-		qrcode, err = NewCoderPDF(content, size).Encode()
+		coder = NewCoderPDF(content, size)
 		mimetype = MIME_PDF
 
 	default:
 		err = fmt.Errorf("extension not recognized")
+		return
 	}
 
+	qrcode, err = coder.Encode()
 	return qrcode, mimetype, err
 }
